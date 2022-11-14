@@ -11,9 +11,12 @@ const app = express()
 const port = 8000
 //const port = process.env.port;
 //const api_route = process.env.api_route;
+let corsOptions = {
+    origin : ['http://192.168.3.4:3000'],
+ }
 
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use('/api/v1',routes);
 app.use('/api/v1',routes2);
 //auth
