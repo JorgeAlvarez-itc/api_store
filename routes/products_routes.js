@@ -1,6 +1,7 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
 const Product = require('../models/product');
+const cors = require('cors');
 
 const router = express.Router();
 
@@ -55,4 +56,4 @@ router.delete('/products/:id', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router.use(cors());
