@@ -1,6 +1,7 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
 const Category = require('../models/category');
+const Product = require('../models/product');
 
 const router2 = express.Router();
 
@@ -54,5 +55,15 @@ router2.delete('/category/:id', async (req, res) => {
         console.log(error);
     }
 });
+
+router2.get('/category/products/:id', async (req, res)=> {
+    try {
+        const cat = req.params.id+"";
+        const products = await Product.find({category:new ObjectId(req.params.id)}).populate('category')
+        res.send(products)
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 module.exports = router2;
