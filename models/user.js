@@ -44,6 +44,22 @@ const user_schema = new mongoose.Schema({
     role:{
         type:String,
         required:true
+    },
+    street: {
+        type: String,
+        default: ''
+    },
+    zip :{
+        type: String,
+        default: ''
+    },
+    city: {
+        type: String,
+        default: ''
+    },
+    country: {
+        type: String,
+        default: ''
     }
 });
 

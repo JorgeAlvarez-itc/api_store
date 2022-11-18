@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
         isAdmin: req.body.isAdmin,
         username: req.body.username,
         gender: req.body.gender,
-        image: req.body.image, 
+        image: req.body.image,
         role: req.body.role
     })
     user = await user.save();
@@ -57,7 +57,7 @@ router.put('/:id', async (req, res) => {
     const user = await User.findByIdAndUpdate(
         req.params.id/*oid*/,
         {
-            id:req.body.id,
+            id: req.body.id,
             name: req.body.name,
             lastname: req.body.lastname,
             email: req.body.email,
@@ -67,15 +67,20 @@ router.put('/:id', async (req, res) => {
             username: req.body.username,
             gender: req.body.gender,
             image: req.body.image,
-            role: req.body.role
-        },
-        { new: true }
-    )
+            role: req.body.role,
+            street: req.body.street,
+            zip: req.body.zip,
+            city: req.body.city,
+            country: req.body.country,
+        })
+},
+    { new: true }
+)
 
-    if (!user)
-        return res.status(400).send('The user cannot be created!')
+if (!user)
+    return res.status(400).send('The user cannot be created!')
 
-    res.send(user);
+res.send(user);
 })
 
 router.post('/login', async (req, res) => {
@@ -95,7 +100,7 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1d' }
         )
 
-        res.status(200).send({ user: user.email, token: token })
+        res.status(200).send({ user: user.email, token: token, email:user.email, image:user.image })
     } else {
         res.status(400).send('Password is wrong!');
     }
@@ -106,17 +111,21 @@ router.post('/login', async (req, res) => {
 
 router.post('/register', async (req, res) => {
     let user = new User({
-        id:req.body.id,
+        id: req.body.id,
         name: req.body.name,
+        lastname: req.body.lastname,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10),
+        password: newPassword,
         phone: req.body.phone,
         isAdmin: req.body.isAdmin,
+        username: req.body.username,
+        gender: req.body.gender,
+        image: req.body.image,
+        role: req.body.role,
         street: req.body.street,
-        apartment: req.body.apartment,
         zip: req.body.zip,
         city: req.body.city,
-        country: req.body.country,
+        country: req.body.country
     })
     user = await user.save();
 
@@ -153,8 +162,8 @@ router.get('/get/count', async (req, res) => {
 })
 
 
-router.post('/kek', async (req, res)=>{
-    var pass =  bcrypt.hashSync(req.body.password, 10)
+router.post('/kek', async (req, res) => {
+    var pass = bcrypt.hashSync(req.body.password, 10)
     console.log(pass);
     res.send(pass);
 })
