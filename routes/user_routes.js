@@ -71,16 +71,15 @@ router.put('/:id', async (req, res) => {
             street: req.body.street,
             zip: req.body.zip,
             city: req.body.city,
-            country: req.body.country,
-        })
-},
-    { new: true }
-)
+            country: req.body.country
+        },
+        { new: true }
+    )
 
-if (!user)
-    return res.status(400).send('The user cannot be created!')
+    if (!user)
+        return res.status(400).send('The user cannot be created!')
 
-res.send(user);
+    res.send(user);
 })
 
 router.post('/login', async (req, res) => {
@@ -100,7 +99,7 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1d' }
         )
 
-        res.status(200).send({ user: user.email, token: token, email:user.email, image:user.image })
+        res.status(200).send({ user: user.email, token: token })
     } else {
         res.status(400).send('Password is wrong!');
     }
@@ -112,20 +111,20 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     let user = new User({
         id: req.body.id,
-        name: req.body.name,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        password: newPassword,
-        phone: req.body.phone,
-        isAdmin: req.body.isAdmin,
-        username: req.body.username,
-        gender: req.body.gender,
-        image: req.body.image,
-        role: req.body.role,
-        street: req.body.street,
-        zip: req.body.zip,
-        city: req.body.city,
-        country: req.body.country
+            name: req.body.name,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            password: newPassword,
+            phone: req.body.phone,
+            isAdmin: req.body.isAdmin,
+            username: req.body.username,
+            gender: req.body.gender,
+            image: req.body.image,
+            role: req.body.role,
+            street: req.body.street,
+            zip: req.body.zip,
+            city: req.body.city,
+            country: req.body.country
     })
     user = await user.save();
 
