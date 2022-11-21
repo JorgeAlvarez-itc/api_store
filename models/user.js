@@ -47,19 +47,23 @@ const user_schema = new mongoose.Schema({
     },
     street: {
         type: String,
-        default: ''
+        default: '',
+        required:false
     },
     zip :{
         type: String,
-        default: ''
+        default: '',
+        required:false
     },
     city: {
         type: String,
-        default: ''
+        default: '',
+        required:false
     },
     country: {
         type: String,
-        default: ''
+        default: '',
+        required:false
     }
 });
 
