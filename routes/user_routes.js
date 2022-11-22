@@ -13,14 +13,16 @@ router.get(`/`, async (req, res) => {
     res.send(userList);
 })
 
+/*
 router.get('/:id', async (req, res) => {
-    const user = await User.findById(req.params.id/*oid*/).select('-password');
+    const user = await User.findById(req.params.id).select('-password');
 
     if (!user) {
         res.status(500).json({ message: 'The user with the given ID was not found.' })
     }
     res.status(200).send(user);
 })
+*/
 
 router.post('/', async (req, res) => {
     let user = new User({
@@ -83,7 +85,7 @@ router.put('/:id', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    const user = await User.findOne({ email: req.body.email })
+    const user = await User.findOne({ email: req.body.email }).select('-password -isAdmin -role')
     const secret = process.env.SECRET;
     if (!user) {
         return res.status(400).send('User not found.');
@@ -99,7 +101,7 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1d' }
         )
 
-        res.status(200).send({ email: user.email, token: token, username:user.username, image:user.image, role:user.role })
+        res.status(200).send({ token: token, user })
     } else {
         res.status(400).send('Password is wrong!');
     }
@@ -167,5 +169,13 @@ router.post('/kek', async (req, res) => {
     res.send(pass);
 })
 
+router.get('/getlast', async (req, res) => {
+    const id = await User.find({}).sort({'id':-1}).limit(1).select('id');
+
+    if (!id) {
+        res.status(500).json({ success: false })
+    }
+    res.send(id);
+})
 
 module.exports = router;
