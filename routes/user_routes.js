@@ -119,7 +119,7 @@ router.post('/register', async (req, res) => {
             name: req.body.name,
             lastname: req.body.lastname,
             email: req.body.email,
-            password: newPassword,
+            password: bcrypt.hashSync(req.body.password, 10),
             phone: req.body.phone,
             isAdmin: req.body.isAdmin,
             username: req.body.username,
