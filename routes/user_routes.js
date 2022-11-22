@@ -101,9 +101,9 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1d' }
         )
 
-        const userData = await User.findOne({'oid':user.oid}).select('-password -isAdmin -role');
-
-        res.status(200).send({ token: token, userData })
+        res.status(200).send({ email: user.email, token: token, username:user.username, image:user.image, role:user.role, 
+            name: user.name, lastname:user.lastname, gender:user.gender, street:user.street, zip:user.zip, city:user.city, country:user.country
+        })
     } else {
         res.status(400).send('Password is wrong!');
     }
