@@ -85,7 +85,7 @@ router.put('/:id', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    const user = await User.findOne({ email: req.body.email }).select('-password -isAdmin -role')
+    const user = await User.findOne({ email: req.body.email })
     const secret = process.env.SECRET;
     if (!user) {
         return res.status(400).send('User not found.');
@@ -101,7 +101,9 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1d' }
         )
 
-        res.status(200).send({ token: token, user })
+        const userData = await User.findOne({'oid':user.oid}).select('-password -isAdmin -role');
+
+        res.status(200).send({ token: token, userData })
     } else {
         res.status(400).send('Password is wrong!');
     }
