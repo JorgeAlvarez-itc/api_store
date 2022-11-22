@@ -102,7 +102,8 @@ router.post('/login', async (req, res) => {
         )
 
         res.status(200).send({ email: user.email, token: token, username:user.username, image:user.image, role:user.role, 
-            name: user.name, lastname:user.lastname, gender:user.gender, street:user.street, zip:user.zip, city:user.city, country:user.country
+            name: user.name, lastname:user.lastname, gender:user.gender, street:user.street, zip:user.zip, city:user.city, 
+            country:user.country, phone:user.phone
         })
     } else {
         res.status(400).send('Password is wrong!');
