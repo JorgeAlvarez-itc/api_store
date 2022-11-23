@@ -66,11 +66,11 @@ const user_schema = new mongoose.Schema({
         required:false
     }
 });
-
+/*
 user_schema.virtual('oid').get(function () {
     return this._id.toHexString();
 });
-
+*/
 user_schema.set('toJSON', {
     virtuals: true,
 });
