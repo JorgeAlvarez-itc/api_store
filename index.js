@@ -4,6 +4,7 @@ const routes = require('./routes/products_routes');
 const user_routes = require('./routes/user_routes');
 const auth_jwt = require('./auth/jwt');
 const routes2 = require('./routes/categories_routes');
+const order_routes = require('./routes/order_routes');
 const cors = require('cors');
 
 const app = express()
@@ -14,11 +15,13 @@ const port = 8000
 
 app.use(express.json());
 app.use(cors());
-app.use('/api/v1',routes);
-app.use('/api/v1',routes2);
+
 //auth
 //app.use(auth_jwt());
-app.use('/api/v1',user_routes);
+app.use('/api/v1', routes);
+app.use('/api/v1', routes2);
+app.use('/api/v1', user_routes);
+app.use('/api/v1', order_routes);
 
 
 
