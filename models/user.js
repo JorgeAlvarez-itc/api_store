@@ -44,13 +44,33 @@ const user_schema = new mongoose.Schema({
     role:{
         type:String,
         required:true
+    },
+    street: {
+        type: String,
+        default: '',
+        required:false
+    },
+    zip :{
+        type: String,
+        default: '',
+        required:false
+    },
+    city: {
+        type: String,
+        default: '',
+        required:false
+    },
+    country: {
+        type: String,
+        default: '',
+        required:false
     }
 });
-
+/*
 user_schema.virtual('oid').get(function () {
     return this._id.toHexString();
 });
-
+*/
 user_schema.set('toJSON', {
     virtuals: true,
 });

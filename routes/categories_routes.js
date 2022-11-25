@@ -1,6 +1,7 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
 const Category = require('../models/category');
+const Product = require('../models/product');
 
 const router2 = express.Router();
 
@@ -54,5 +55,22 @@ router2.delete('/category/:id', async (req, res) => {
         console.log(error);
     }
 });
+
+router2.get('/category/products/:prod', async (req, res)=> {
+    try {
+        //const cat = req.params.id+"";
+        var cat = req.params.prod;
+        var s1 = cat.substring(0,1);
+        var s2 = cat.substring(1);
+        const aux = s1.toUpperCase();
+        const url_cat = aux.concat(s2);
+        const bd_cat = await Category.findOne({"name":url_cat});
+        
+        const products = await Product.find({"category":bd_cat._id}).populate('category')
+        res.send(products)
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 module.exports = router2;

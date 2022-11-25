@@ -13,15 +13,18 @@ router.get(`/`, async (req, res) => {
     res.send(userList);
 })
 
-router.get('/:id', async (req, res) => {
-    const user = await User.findById(req.params.id/*oid*/).select('-password');
 
+router.post('/getuser', async (req, res) => {
+    //const user = await User.findById(req.params.id).select('-password');
+    const user = await User.find({"email":req.body.email}).select({'password':0,'oid':0})
     if (!user) {
         res.status(500).json({ message: 'The user with the given ID was not found.' })
     }
     res.status(200).send(user);
 })
 
+
+/*
 router.post('/', async (req, res) => {
     let user = new User({
         id: req.body.id,
@@ -33,7 +36,7 @@ router.post('/', async (req, res) => {
         isAdmin: req.body.isAdmin,
         username: req.body.username,
         gender: req.body.gender,
-        image: req.body.image, 
+        image: req.body.image,
         role: req.body.role
     })
     user = await user.save();
@@ -43,7 +46,7 @@ router.post('/', async (req, res) => {
 
     res.send(user);
 })
-
+*/
 router.put('/:id', async (req, res) => {
 
     const userExist = await User.findById(req.params.id/*oid*/);
@@ -57,7 +60,7 @@ router.put('/:id', async (req, res) => {
     const user = await User.findByIdAndUpdate(
         req.params.id/*oid*/,
         {
-            id:req.body.id,
+            id: req.body.id,
             name: req.body.name,
             lastname: req.body.lastname,
             email: req.body.email,
@@ -67,7 +70,11 @@ router.put('/:id', async (req, res) => {
             username: req.body.username,
             gender: req.body.gender,
             image: req.body.image,
-            role: req.body.role
+            role: req.body.role,
+            street: req.body.street,
+            zip: req.body.zip,
+            city: req.body.city,
+            country: req.body.country
         },
         { new: true }
     )
@@ -93,7 +100,11 @@ router.post('/login', async (req, res) => {
             secret,
             { expiresIn: '1d' }
         )
-        res.status(200).send({ user: user.email, token: token })
+
+        res.status(200).send({ email: user.email, token: token, username:user.username, image:user.image, role:user.role, 
+            name: user.name, lastname:user.lastname, gender:user.gender, street:user.street, zip:user.zip, city:user.city, 
+            country:user.country, phone:user.phone, oid:user._id
+        })
     } else {
         res.status(400).send('Password is wrong!');
     }
@@ -102,17 +113,21 @@ router.post('/login', async (req, res) => {
 
 router.post('/register', async (req, res) => {
     let user = new User({
-        id:req.body.id,
-        name: req.body.name,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10),
-        phone: req.body.phone,
-        isAdmin: req.body.isAdmin,
-        street: req.body.street,
-        apartment: req.body.apartment,
-        zip: req.body.zip,
-        city: req.body.city,
-        country: req.body.country,
+        id: req.body.id,
+            name: req.body.name,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 10),
+            phone: req.body.phone,
+            isAdmin: req.body.isAdmin,
+            username: req.body.username,
+            gender: req.body.gender,
+            image: req.body.image,
+            role: req.body.role,
+            street: req.body.street,
+            zip: req.body.zip,
+            city: req.body.city,
+            country: req.body.country
     })
     user = await user.save();
 
@@ -149,11 +164,19 @@ router.get('/get/count', async (req, res) => {
 })
 
 
-router.post('/kek', async (req, res)=>{
-    var pass =  bcrypt.hashSync(req.body.password, 10)
+router.post('/kek', async (req, res) => {
+    var pass = bcrypt.hashSync(req.body.password, 10)
     console.log(pass);
     res.send(pass);
 })
 
+router.get('/getlast', async (req, res) => {
+    const id = await User.find({}).sort({'id':-1}).limit(1).select('id');
+
+    if (!id) {
+        res.status(500).json({ success: false })
+    }
+    res.send(id);
+})
 
 module.exports = router;
