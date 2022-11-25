@@ -4,7 +4,11 @@ const Product = require('./product')
 const orderSchema = mongoose.Schema({
     id: Number,
     date: { type: Date, required: true },
-    user_id: { type: Number, required: false },
+    user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: false
+    },
     products: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'product',
