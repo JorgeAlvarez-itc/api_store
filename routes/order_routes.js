@@ -56,6 +56,15 @@ router2.delete('/order/delete/:id', async (req, res) => {
     }
 });
 
+router2.get('/order/getlast', async (req, res) => {
+    const id = await Order.find({}).sort({'id':-1}).limit(1).select('id');
+
+    if (!id) {
+        res.status(500).json({ success: false })
+    }
+    res.send(id);
+});
+
 /*
 router2.get('/order/details/:id', async (req, res)=> {
     try {
