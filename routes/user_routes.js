@@ -179,25 +179,4 @@ router.get('/getlast', async (req, res) => {
     res.send(id);
 });
 
-router2.get("/order/get/guest", async (req, res) => {
-    try {
-      const guests = await Order.aggregate([
-        {
-          $project: { user_id: 1 },
-        },
-        {
-          $match: {
-            user_id: null,
-          },
-        },
-        {
-          $count: "Invitados",
-        },
-      ]);
-      res.send(guests);
-    } catch (error) {
-      console.log(error);
-    }
-});
-
 module.exports = router;
