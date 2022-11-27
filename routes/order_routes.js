@@ -14,6 +14,15 @@ router2.get('/order/get', async (req, res) => {
         console.log(error);
     }
 });
+router2.get('/order/get/:id', async (req, res) => {
+    try {
+        const orders = await Order.find({"user_id":ObjectId(req.params.id)});
+        res.send(orders);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
 
 router2.get('/order/details/:id', async (req, res) => {
     try {
