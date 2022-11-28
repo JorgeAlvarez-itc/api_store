@@ -15,6 +15,16 @@ router.get('/products', async (req, res) => {
     }
 });
 
+router.get('/products/data/:id', async (req, res) => {
+    try {
+        const products = await Product.findById({"_id":ObjectId(req.params)});
+        res.send(products);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+
 router.get('/products/:id', async (req, res) => {
     try {
         const products = await Product.find({ "id": parseInt(req.params.id) });
